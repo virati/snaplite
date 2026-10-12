@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>snaplite</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main id="stage">
+  <div id="empty">
+    <strong>Drop an image here</strong>
+    <span>or click to open &middot; paste from clipboard &middot; Ctrl+O</span>
+  </div>
+  <div id="frame" hidden>
+    <canvas id="view"></canvas>
+    <canvas id="overlay"></canvas>
+  </div>
+  <div id="status" hidden></div>
+</main>
+
+<aside id="panel">
+  <header>
+    <button id="open" title="Open image (Ctrl+O)">Open</button>
+    <button id="undo" title="Undo (Ctrl+Z)">&#8630;</button>
+    <button id="redo" title="Redo (Ctrl+Shift+Z)">&#8631;</button>
+    <button id="compare" title="Hold to see the original (\)">Compare</button>
+    <button id="reset" title="Reset all edits">Reset</button>
+  </header>
+
+  <div id="sections">
+    <details>
+      <summary>Crop &amp; rotate</summary>
+      <div class="body">
+        <div class="seg">
+          <button id="rot-l" title="Rotate left">&#10226;</button>
+          <button id="rot-r" title="Rotate right">&#10227;</button>
+          <button id="flip" title="Flip horizontally">Flip</button>
+          <select id="aspect" title="Crop aspect ratio">
+            <option value="free">Free</option>
+            <option value="orig">Original</option>
+            <option>1:1</option>
+            <option>4:3</option>
+            <option>3:2</option>
+            <option>16:9</option>
+            <option>3:4</option>
+            <option>2:3</option>
+            <option>9:16</option>
+          </select>
+        </div>
+        <div id="geom"></div>
+        <div class="seg">
+          <button id="crop-toggle">Crop</button>
+          <button id="crop-reset" class="ghost" title="Remove the crop">Reset</button>
+        </div>
+        <p class="hint">Press Crop, drag the edges, corners or the box itself, then press Done.</p>
+      </div>
+    </details>
+
+    <details open>
+      <summary>Basics</summary>
+      <div class="body" id="basics"></div>
+    </details>
+
+    <details>
+      <summary>Details</summary>
+      <div class="body" id="detail"></div>
+    </details>
+
+    <details>
+      <summary>Curves</summary>
+      <div class="body">
+        <div class="seg" id="channels">
+          <button data-chan="rgb">RGB</button>
+          <button data-chan="r">R</button>
+          <button data-chan="g">G</button>
+          <button data-chan="b">B</button>
+          <button id="curve-reset" class="ghost" title="Reset this channel">Reset</button>
+        </div>
+        <canvas id="curve" width="544" height="544"></canvas>
+        <p class="hint">Click to add a point, drag to move, double-click to remove.</p>
+      </div>
+    </details>
+
+    <details id="sec-blur">
+      <summary>Lens blur</summary>
+      <div class="body">
+        <div class="seg" id="shapes">
+          <button data-shape="radial">Radial</button>
+          <button data-shape="linear">Linear</button>
+        </div>
+        <div id="blur"></div>
+        <p class="hint">Drag on the image to place the focus point.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Grain</summary>
+      <div class="body" id="grain"></div>
+    </details>
+
+    <details open>
+      <summary>Filters</summary>
+      <div class="body">
+        <div id="filters"></div>
+        <div id="filter-strength"></div>
+      </div>
+    </details>
+
+    <details>
+      <summary>Looks</summary>
+      <div class="body">
+        <div id="looks"></div>
+        <div class="seg">
+          <input id="look-name" type="text" placeholder="Name for the current edit" maxlength="40">
+          <button id="look-save">Save</button>
+        </div>
+        <p class="hint">A look stores every setting except crop and rotation.</p>
+      </div>
+    </details>
+  </div>
+
+  <footer>
+    <select id="format" title="Export format">
+      <option value="jpeg">JPEG</option>
+      <option value="png">PNG</option>
+      <option value="webp">WebP</option>
+    </select>
+    <input id="quality" type="range" min="50" max="100" value="92" title="Quality">
+    <output id="quality-out">92</output>
+    <button id="export" class="primary" title="Export at full resolution (Ctrl+S)">Export</button>
+  </footer>
+</aside>
+
+<input type="file" id="file" accept="image/*" hidden>
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
